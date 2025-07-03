@@ -30,4 +30,58 @@ public class Manager {
         }
         return null;
     }
+
+    public ArrayList<Task> getAllTasks() {
+        return new ArrayList<>(tasks.values());
+    }
+
+    public void deleteAllTasks() {
+        tasks.clear();
+    }
+
+    public void deleteTask(int id) {
+        Task task = tasks.get(id);
+
+        if (task instanceof Epic) {
+            ((Epic) task).getSubtaskIds().forEach(subtaskId -> {
+                tasks.remove(subtaskId);
+            });
+        }
+        tasks.remove(id);
+    }
+
+    public Task getTask(int id) {
+        return tasks.get(id);
+    }
+
+    public Task updateTask(int id, String name, String desc) {
+        Task task = tasks.get(id);
+
+        if (task == null) {
+            return null;
+        }
+        if (name != null) {
+            task.setName(name);
+        }
+        if (desc != null) {
+            task.setDesc(desc);
+        }
+
+        return task;
+    }
+
+    public ArrayList<Subtask> getEpicSubtasks(int epicId) {
+        if (!tasks.containsKey(epicId)) {
+            return null;
+        }
+
+        ArrayList<Subtask> subtasks = new ArrayList<>();
+        Epic epic = (Epic) tasks.get(epicId);
+
+        epic.getSubtaskIds().forEach(subtaskId -> {
+            subtasks.add((Subtask) tasks.get(subtaskId));
+        });
+
+        return subtasks;
+    }
 }
