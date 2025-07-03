@@ -10,6 +10,7 @@ public class Task {
         this.id = id;
         this.name = name;
         this.desc = desc;
+        this.status = TaskStatus.NEW;
     }
 
     public String getName() {
