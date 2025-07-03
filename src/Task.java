@@ -3,12 +3,11 @@ import java.util.Objects;
 public class Task {
     private final String name;
     private final String desc;
-    private static int nextId = 1;
     private final int id;
     private TaskStatus status;
 
-    public Task(String name, String desc) {
-        this.id = nextId++;
+    public Task(int id, String name, String desc) {
+        this.id = id;
         this.name = name;
         this.desc = desc;
     }
