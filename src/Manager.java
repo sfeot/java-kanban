@@ -54,20 +54,10 @@ public class Manager {
         return tasks.get(id);
     }
 
-    public Task updateTask(int id, String name, String desc) {
-        Task task = tasks.get(id);
-
-        if (task == null) {
-            return null;
+    public void updateTask(Task task) {
+        if (tasks.containsKey(task.getId())) {
+            tasks.put(task.getId(), task);
         }
-        if (name != null) {
-            task.setName(name);
-        }
-        if (desc != null) {
-            task.setDesc(desc);
-        }
-
-        return task;
     }
 
     public ArrayList<Subtask> getEpicSubtasks(int epicId) {
