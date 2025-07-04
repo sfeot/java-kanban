@@ -1,3 +1,5 @@
+package com.yandex.kanban.modal;
+
 public class Subtask extends Task {
     private final int EpicId;
 

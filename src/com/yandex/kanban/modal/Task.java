@@ -1,3 +1,5 @@
+package com.yandex.kanban.modal;
+
 import java.util.Objects;
 
 public class Task {
@@ -55,7 +57,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "com.yandex.kanban.modal.Task{" +
                 "name='" + name + '\'' +
                 ", desc='" + desc + '\'' +
                 ", id=" + id +

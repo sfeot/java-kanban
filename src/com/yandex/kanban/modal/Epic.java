@@ -1,3 +1,5 @@
+package com.yandex.kanban.modal;
+
 import java.util.ArrayList;
 
 public class Epic extends Task {
