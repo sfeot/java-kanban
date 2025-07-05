@@ -5,14 +5,25 @@ import java.util.Objects;
 public class Task {
     private String name;
     private String desc;
-    private final int id;
     private TaskStatus status;
+    private int id;
 
-    public Task(int id, String name, String desc) {
-        this.id = id;
+    public Task(String name, String desc) {
         this.name = name;
         this.desc = desc;
         this.status = TaskStatus.NEW;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public TaskType getType() {
+        return TaskType.REGULAR;
     }
 
     public String getName() {
@@ -21,10 +32,6 @@ public class Task {
 
     public String getDesc() {
         return desc;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public TaskStatus getStatus() {

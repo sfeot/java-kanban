@@ -13,50 +13,50 @@ public class Manager {
         tasks = new HashMap<>();
     }
 
-    public Task createRegularTask(String name, String desc) {
-        Task task = new Task(nextTaskId++, name, desc);
+    public int createRegularTask(Task task) {
+        task.setId(nextTaskId++);
         tasks.put(task.getId(), task);
-        return task;
+        return task.getId();
     }
 
-    public Epic createEpic(String name, String desc) {
-        Epic epic = new Epic(nextTaskId++, name, desc);
+    public int createEpic(Epic epic) {
+        epic.setId(nextTaskId++);
         tasks.put(epic.getId(), epic);
-        return epic;
+        return epic.getId();
     }
 
-    public Subtask createSubtask(String name, String desc, int epicId) {
-        Task epic = tasks.get(epicId);
+    public int createSubtask(Subtask subtask) {
+        subtask.setId(nextTaskId++);
+        tasks.put(subtask.getId(), subtask);
 
-        if ((epic instanceof Epic)) {
-            Subtask subtask = new Subtask(nextTaskId++, name, desc, epicId);
+        Epic epic = (Epic) tasks.get(subtask.getEpicId());
 
-            tasks.put(subtask.getId(), subtask);
-            ((Epic) epic).addSubTask(subtask.getId());
-
-            return subtask;
+        if (epic != null) {
+            epic.addSubTask(subtask.getId());
+            calculateEpicStatus(epic);
         }
-        return null;
+
+        return subtask.getId();
     }
 
     public ArrayList<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
     }
 
-    public void deleteAllTasks() {
-        tasks.clear();
-    }
-
     public void deleteTask(int id) {
         Task task = tasks.get(id);
 
-        if (task instanceof Epic) {
-            ((Epic) task).getSubtaskIds().forEach(tasks::remove);
-        } else if (task instanceof Subtask subtask) {
+        if (task.getType() == TaskType.EPIC) {
+            ((Epic) task).getSubtasks().forEach(tasks::remove);
+        } else if (task.getType() == TaskType.SUBTASK) {
+            Subtask subtask = (Subtask) task;
             Epic epic = (Epic) tasks.get(subtask.getEpicId());
 
             epic.removeSubTask(subtask.getId());
+            TaskStatus status = calculateEpicStatus(epic);
+            epic.setStatus(status);
         }
+
         tasks.remove(id);
     }
 
@@ -79,38 +79,20 @@ public class Manager {
             return;
         }
 
-        if (task instanceof Subtask) {
-            updateSubtask((Subtask) existingTask, (Subtask) task);
-        } else {
-            tasks.put(task.getId(), task);
-        }
+        tasks.put(task.getId(), task);
 
-        if (!(task instanceof Subtask subtask)) {
+        if (task.getType() != TaskType.SUBTASK) {
             return;
         }
 
+        Subtask subtask = (Subtask) task;
         Epic epic = (Epic) tasks.get(subtask.getEpicId());
-        TaskStatus newEpicStatus = calculateEpicStatus(epic);
-        epic.setStatus(newEpicStatus);
-    }
 
-    private void updateSubtask(Subtask existing, Subtask updated) {
-        int oldEpicId = existing.getEpicId();
-        int newEpicId = updated.getEpicId();
-
-        if (oldEpicId != newEpicId) {
-            Epic oldEpic = (Epic) tasks.get(oldEpicId);
-            if (oldEpic != null) {
-                oldEpic.removeSubTask(existing.getId());
-            }
-
-            Epic newEpic = (Epic) tasks.get(newEpicId);
-            if (newEpic != null) {
-                newEpic.addSubTask(updated.getId());
-            }
+        if (epic != null) {
+            epic.addSubTask(task.getId());
+            TaskStatus newEpicStatus = calculateEpicStatus(epic);
+            epic.setStatus(newEpicStatus);
         }
-
-        tasks.put(updated.getId(), updated);
     }
 
     public ArrayList<Subtask> getEpicSubtasks(int epicId) {
@@ -121,7 +103,7 @@ public class Manager {
         ArrayList<Subtask> subtasks = new ArrayList<>();
         Epic epic = (Epic) tasks.get(epicId);
 
-        epic.getSubtaskIds().forEach(subtaskId -> {
+        epic.getSubtasks().forEach(subtaskId -> {
             subtasks.add((Subtask) tasks.get(subtaskId));
         });
 
