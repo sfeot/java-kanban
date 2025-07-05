@@ -83,7 +83,7 @@ public class Manager {
 
     public void deleteAllEpics() {
         tasks.forEach((id, task) -> {
-            if (task.getType() != TaskType.REGULAR) {
+            if (task.getType() == TaskType.EPIC || task.getType() == TaskType.SUBTASK) {
                 tasks.remove(id);
             }
         });
