@@ -39,8 +39,68 @@ public class Manager {
         return subtask.getId();
     }
 
+    public ArrayList<Task> getAllRegularTasks() {
+        ArrayList<Task> regularTasks = new ArrayList<>();
+        for (Task task : tasks.values()) {
+            if (task.getType() == TaskType.REGULAR) {
+                regularTasks.add(task);
+            }
+        }
+        return regularTasks;
+    }
+
+    public ArrayList<Epic> getAllEpics() {
+        ArrayList<Epic> epics = new ArrayList<>();
+        for (Task task : tasks.values()) {
+            if (task.getType() == TaskType.EPIC) {
+                epics.add((Epic) task);
+            }
+        }
+        return epics;
+    }
+
+    public ArrayList<Subtask> getAllSubtasks() {
+        ArrayList<Subtask> subtasks = new ArrayList<>();
+        for (Task task : tasks.values()) {
+            if (task.getType() == TaskType.SUBTASK) {
+                subtasks.add((Subtask) task);
+            }
+        }
+        return subtasks;
+    }
+
     public ArrayList<Task> getAllTasks() {
         return new ArrayList<>(tasks.values());
+    }
+
+    public void deleteAllRegularTasks() {
+        tasks.forEach((id, task) -> {
+            if (task.getType() == TaskType.REGULAR) {
+                tasks.remove(id);
+            }
+        });
+    }
+
+    public void deleteAllEpics() {
+        tasks.forEach((id, task) -> {
+            if (task.getType() != TaskType.REGULAR) {
+                tasks.remove(id);
+            }
+        });
+    }
+
+    public void deleteAllSubtasks() {
+        tasks.forEach((id, task) -> {
+            if (task.getType() == TaskType.SUBTASK) {
+                Subtask subtask = (Subtask) task;
+                Epic epic = (Epic) tasks.get(subtask.getEpicId());
+
+                tasks.remove(id);
+                epic.removeSubTask(id);
+
+                calculateEpicStatus(epic);
+            }
+        });
     }
 
     public void deleteTask(int id) {
