@@ -5,26 +5,29 @@ import com.yandex.kanban.modal.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Manager {
+public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks;
     private int nextTaskId = 1;
 
-    public Manager() {
+    public InMemoryTaskManager() {
         tasks = new HashMap<>();
     }
 
+    @Override
     public int createRegularTask(Task task) {
         task.setId(nextTaskId++);
         tasks.put(task.getId(), task);
         return task.getId();
     }
 
+    @Override
     public int createEpic(Epic epic) {
         epic.setId(nextTaskId++);
         tasks.put(epic.getId(), epic);
         return epic.getId();
     }
 
+    @Override
     public int createSubtask(Subtask subtask) {
         subtask.setId(nextTaskId++);
         tasks.put(subtask.getId(), subtask);
@@ -39,6 +42,7 @@ public class Manager {
         return subtask.getId();
     }
 
+    @Override
     public ArrayList<Task> getAllRegularTasks() {
         ArrayList<Task> regularTasks = new ArrayList<>();
         for (Task task : tasks.values()) {
@@ -49,6 +53,7 @@ public class Manager {
         return regularTasks;
     }
 
+    @Override
     public ArrayList<Epic> getAllEpics() {
         ArrayList<Epic> epics = new ArrayList<>();
         for (Task task : tasks.values()) {
@@ -59,6 +64,7 @@ public class Manager {
         return epics;
     }
 
+    @Override
     public ArrayList<Subtask> getAllSubtasks() {
         ArrayList<Subtask> subtasks = new ArrayList<>();
         for (Task task : tasks.values()) {
@@ -73,6 +79,7 @@ public class Manager {
         return new ArrayList<>(tasks.values());
     }
 
+    @Override
     public void deleteAllRegularTasks() {
         tasks.forEach((id, task) -> {
             if (task.getType() == TaskType.REGULAR) {
@@ -81,6 +88,7 @@ public class Manager {
         });
     }
 
+    @Override
     public void deleteAllEpics() {
         tasks.forEach((id, task) -> {
             if (task.getType() == TaskType.EPIC || task.getType() == TaskType.SUBTASK) {
@@ -89,6 +97,7 @@ public class Manager {
         });
     }
 
+    @Override
     public void deleteAllSubtasks() {
         tasks.forEach((id, task) -> {
             if (task.getType() == TaskType.SUBTASK) {
@@ -103,6 +112,7 @@ public class Manager {
         });
     }
 
+    @Override
     public void deleteTask(int id) {
         Task task = tasks.get(id);
 
@@ -120,10 +130,12 @@ public class Manager {
         tasks.remove(id);
     }
 
+    @Override
     public Task getTask(int id) {
         return tasks.get(id);
     }
 
+    @Override
     public void updateTask(Task task) {
         if (task == null) {
             return;
@@ -155,6 +167,7 @@ public class Manager {
         }
     }
 
+    @Override
     public ArrayList<Subtask> getEpicSubtasks(int epicId) {
         if (!tasks.containsKey(epicId)) {
             return null;
