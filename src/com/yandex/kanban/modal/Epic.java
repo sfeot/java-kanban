@@ -30,4 +30,15 @@ public class Epic extends Task {
     public ArrayList<Integer> getSubtasks() {
         return new ArrayList<>(subtaskIds);
     }
+
+    @Override
+    public Task copy() {
+        Epic copyTask = new Epic(this.getName(), this.getDesc());
+        copyTask.setId(this.getId());
+        copyTask.setStatus(this.getStatus());
+        for (Integer subtaskId : subtaskIds) {
+            copyTask.addSubTask(subtaskId);
+        }
+        return copyTask;
+    }
 }

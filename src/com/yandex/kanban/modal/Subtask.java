@@ -15,4 +15,12 @@ public class Subtask extends Task {
     public int getEpicId() {
         return epicId;
     }
+
+    @Override
+    public Task copy() {
+        Subtask copyTask = new Subtask(this.getName(), this.getDesc(), this.getEpicId());
+        copyTask.setId(this.getId());
+        copyTask.setStatus(this.getStatus());
+        return copyTask;
+    }
 }
