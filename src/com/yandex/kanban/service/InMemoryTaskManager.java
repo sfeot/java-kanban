@@ -29,15 +29,18 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public int createSubtask(Subtask subtask) {
+        Task epicTask = tasks.get(subtask.getEpicId());
+        if (epicTask == null || epicTask.getType() != TaskType.EPIC) {
+            return -1;
+        }
+
         subtask.setId(nextTaskId++);
         tasks.put(subtask.getId(), subtask);
 
-        Epic epic = (Epic) tasks.get(subtask.getEpicId());
+        Epic epic = (Epic) epicTask;
 
-        if (epic != null) {
-            epic.addSubTask(subtask.getId());
-            calculateEpicStatus(epic);
-        }
+        epic.addSubTask(subtask.getId());
+        calculateEpicStatus(epic);
 
         return subtask.getId();
     }
