@@ -8,9 +8,11 @@ import java.util.HashMap;
 public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> tasks;
     private int nextTaskId = 1;
+    private final HistoryManager historyManager;
 
-    public InMemoryTaskManager() {
-        tasks = new HashMap<>();
+    public InMemoryTaskManager(HistoryManager historyManager) {
+        this.tasks = new HashMap<>();
+        this.historyManager = historyManager;
     }
 
     @Override
@@ -135,6 +137,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTask(int id) {
+        Task task = tasks.get(id);
+        historyManager.add(task);
         return tasks.get(id);
     }
 
@@ -208,5 +212,10 @@ public class InMemoryTaskManager implements TaskManager {
             return TaskStatus.DONE;
         }
         return TaskStatus.IN_PROGRESS;
+    }
+
+    @Override
+    public ArrayList<Task> getHistory() {
+        return new ArrayList<>(historyManager.getHistory());
     }
 }

@@ -87,4 +87,14 @@ class InMemoryTaskManagerTest {
         int epicId = taskManager.createEpic(epic);
         assertFalse(epic.getSubtasks().contains(epicId));
     }
+
+    @Test
+    void shouldAddTasksToHistory() {
+        Task task = new Task("Test Task", "Test Description");
+        int taskId = taskManager.createRegularTask(task);
+        taskManager.getTask(taskId);
+
+        assertEquals(1, taskManager.getHistory().size());
+        assertEquals(task, taskManager.getHistory().get(0));
+    }
 }
