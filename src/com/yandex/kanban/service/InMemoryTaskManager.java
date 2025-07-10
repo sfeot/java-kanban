@@ -2,11 +2,13 @@ package com.yandex.kanban.service;
 
 import com.yandex.kanban.model.*;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
-    private final HashMap<Integer, Task> tasks;
+    private final Map<Integer, Task> tasks;
     private int nextTaskId = 1;
     private final HistoryManager historyManager;
 
@@ -215,7 +217,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
-        return new ArrayList<>(historyManager.getHistory());
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 }
