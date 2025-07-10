@@ -1,6 +1,6 @@
 package com.yandex.kanban.service;
 
-import com.yandex.kanban.modal.Task;
+import com.yandex.kanban.model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,4 @@
-package com.yandex.kanban.modal;
+package com.yandex.kanban.model;
 
 public class Subtask extends Task {
     private final int epicId;

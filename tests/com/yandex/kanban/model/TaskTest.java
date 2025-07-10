@@ -1,4 +1,4 @@
-package com.yandex.kanban.modal;
+package com.yandex.kanban.model;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

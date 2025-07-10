@@ -1,6 +1,6 @@
 package com.yandex.kanban.service;
 
-import com.yandex.kanban.modal.*;
+import com.yandex.kanban.model.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

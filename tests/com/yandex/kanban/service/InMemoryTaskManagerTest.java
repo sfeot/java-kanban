@@ -1,8 +1,8 @@
 package com.yandex.kanban.service;
 
-import com.yandex.kanban.modal.Epic;
-import com.yandex.kanban.modal.Subtask;
-import com.yandex.kanban.modal.Task;
+import com.yandex.kanban.model.Epic;
+import com.yandex.kanban.model.Subtask;
+import com.yandex.kanban.model.Task;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
